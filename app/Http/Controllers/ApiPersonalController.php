@@ -98,7 +98,7 @@ class ApiPersonalController extends Controller
                     
                     $pdf->Cell(190,8,utf8_decode('UNIVERSIDAD TECNOLÓGICA DEL CENTRO'),0,1,'C');
                     $pdf->Cell(190,8,utf8_decode(''),0,1,'C');
-                    $pdf->Cell(190,8,utf8_decode('TARJETA DE REGISTRO'),0,1,'C');
+                    $pdf->Cell(190,8,utf8_decode('REGISTRO DE ENTRADAS Y SALIDAS'),0,1,'C');
                     $pdf->Ln(5);
 
                     $pdf->SetFont('Arial','', 10);
