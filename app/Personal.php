@@ -9,7 +9,7 @@ class Personal extends Model
     protected $table='personal';
     protected $primaryKey='noreferencia';
 
-    //public $timestamps=false;
+    //puapblic $timestamps=false;
     //public $incrementing=false;
 
     // public $fillable=[

@@ -66,7 +66,7 @@ class ApiPersonalController extends Controller
 
     public function asistencia(){
 
-        $periodo=2;
+        $periodo=8;
 
 
 
@@ -82,7 +82,8 @@ class ApiPersonalController extends Controller
 
              $asist = DB::select("SELECT fechas.fecha,quincenas.nombre,quincenas.inicio,quincenas.fin,
                 CheckEntrada(fechas.fecha,$per->noreferencia) as entrada,
-                CheckSalida(fechas.fecha,$per->noreferencia) as salida
+                CheckSalida(fechas.fecha,$per->noreferencia) as salida,
+                TIMEDIFF(CheckSalida(fechas.fecha,$per->noreferencia),CheckEntrada(fechas.fecha,$per->noreferencia)) as prod
                 FROM fechas INNER JOIN quincenas ON quincenas.id_periodo=fechas.id_periodo
                 WHERE quincenas.id_periodo=$periodo");
              // return $asist;
@@ -140,13 +141,29 @@ class ApiPersonalController extends Controller
             
                 foreach ($asist as $a) {
                     $pdf->Cell(20,6,utf8_decode(''),0,0,'L');
+
                     $pdf->Cell(30,6,utf8_decode($a->fecha),1,0,'L');
-                    $pdf->Cell(30,6,utf8_decode($a->entrada),1,0,'L');
-                    $pdf->Cell(30,6,utf8_decode($a->salida),1,0,'L');
+                    $prod=$a->prod;
+                    
+                    if($a->entrada=="07:30:00" && $a->salida=="15:15:00")
+                    {
+                        $pdf->Cell(30,6,'',1,0,'L');
+                        $pdf->Cell(30,6,'',1,0,'L');
+                        $pdf->Cell(30,6,'',1,0,'L');
+                    }
+                    else
+                    {
+                        $pdf->Cell(30,6,utf8_decode($a->entrada),1,0,'L');
+                        $pdf->Cell(30,6,utf8_decode($a->salida),1,0,'L');
+                        $pdf->Cell(30,6,utf8_decode($prod),1,0,'L');
+                    }
+                    
+                    
+                    
 
-                    $prod=strtotime($a->entrada);
+                    
 
-                    $pdf->Cell(30,6,utf8_decode($prod),1,0,'L');
+                    
 
                     // $interval = date_diff(strtotime($a->entrada), strtotime($a->salida));
                     
@@ -170,7 +187,7 @@ class ApiPersonalController extends Controller
                 $pdf->Cell(70,6,utf8_decode(''),'B',1,'L');
 
                 $pdf->Cell(10,6,utf8_decode(''),0,0,'L');
-                $pdf->Cell(70,6,utf8_decode('BR. SANDRA PECH'),0,0,'L');
+                $pdf->Cell(70,6,utf8_decode('ING. ROSALINDA CHAN CANUL'),0,0,'L');
                 $pdf->Cell(10,6,utf8_decode(''),0,0,'L');
                 $pdf->Cell(70,6,utf8_decode("$per->nombre $per->appat $per->apmat"),0,1,'L');
 
